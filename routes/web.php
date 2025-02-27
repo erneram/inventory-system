@@ -1,0 +1,42 @@
+<?php
+
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PriceController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductController;
+
+use Illuminate\Support\Facades\Route;
+
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    // RUTAS DE PERFIL
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // RUTAS DE CATEGORIAS
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+
+    // RUTAS DE PRODUCTOS
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+
+
+    // RUTA DE PRECIOS
+    Route::get('/prices', [PriceController::class, 'index'])->name('prices.index');
+    Route::post('/prices', [PriceController::class, 'store'])->name('prices.store');
+
+    // RUTA DE VENTAS
+
+});
+
+require __DIR__ . '/auth.php';
