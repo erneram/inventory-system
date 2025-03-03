@@ -10,7 +10,7 @@ class SaleController extends Controller
 {
     public function index()
     {
-        $sales = Sale::all();
+        $sales = Sale::with('user')->get();
         $users = User::all();
         return view("sales.sales-table", compact("sales", "users"));
     }
