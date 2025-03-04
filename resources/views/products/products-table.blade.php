@@ -9,34 +9,21 @@
                 {{ session('success')}}
             </div>
         @endif
-
-        {{-- TABLA CATEGORIAS --}}
-        <div class="overflox-x-auto">
-            <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Id</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Nombre</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Descripción</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Categoría</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($products as $product)
-                        <tr class="border-b hover:bg-gray-100">
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$product->id}}</td>
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$product->name}}</td>
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$product->description}}</td>
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$product->category->name}}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+        <x-reusable-table
+            :headers="['Id', 'Nombre', 'Descripción', 'Categoría']"
+            :rows="$products->map(function($product){
+                return [
+                    $product->id,
+                    $product->name,
+                    $product->description,
+                    $product->category->name
+                ];
+            })->toArray()"
+        />
     </div>
     {{-- Formulario para agregar categorias --}}
     <div class="mt-10">
-        <h2 class="text-xl text-white font-bold mb-4">Agregar Nueva Categoría</h2>
+        <h2 class="text-xl text-white font-bold mb-4">Agregar nuevo producto</h2>
         <form action="{{ route('products.store') }}" method="POST" class="bg-white p-6 rounded shadow-md">
             @csrf
             <div class="mb-4">

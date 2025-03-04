@@ -7,30 +7,17 @@
                 {{ session('success')}}
             </div>
         @endif
-
-        {{-- TABLA PRECIOS --}}
-        <div class="overflox-x-auto">
-            <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Id</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Producto</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Precio del producto</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Precio de venta</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($prices as $price)
-                        <tr class="border-b hover:bg-gray-100">
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$price->id}}</td>
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$price->product->name}}</td>
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$price->cost_price}}</td>
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$price->selling_price}}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+        <x-reusable-table
+            :headers="['ID', 'Producto', 'Precio', 'Precio Venta']"
+            :rows="$prices->map(function($price) {
+                return [
+                    $price->id,
+                    $price->product->name,
+                    $price->cost_price,
+                    $price->selling_price
+                ];
+            })->toArray()"
+        />
     </div>
     {{-- Formulario para agregar categorias --}}
     <div class="mt-10">

@@ -7,32 +7,17 @@
                 {{ session('success')}}
             </div>
         @endif
-
-        {{-- TABLA CATEGORIAS --}}
-        <div class="overflox-x-auto">
-            <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Id</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Nombre</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Tipo</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Creado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($categories as $category)
-                    <tr class="border-b hover:bg-gray-100">
-                        <td class="py-3 px-5 text-sm text-gray-600">{{$category->id}}</td>
-                        <td class="py-3 px-5 text-sm text-gray-600">{{$category->name}}</td>
-                        <td class="py-3 px-5 text-sm text-gray-600">{{$category->type}}</td>
-                        <td class="py-3 px-5 text-sm text-gray-600">
-                            {{$category->created_at ? $category->created_at->format('d/m/Y H:i') : ''}}
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+        <x-reusable-table
+            :headers="['ID', 'Nombre', 'Tipo', 'Creado']"
+            :rows="$categories->map(function($category){
+                return [
+                    $category->id,
+                    $category->name,
+                    $category->type,
+                    $category->created_at ? $category->created_at->format('d/m/Y H:i') : ''
+                ];
+            })->toArray()"
+        />
     </div>
     {{-- Formulario para agregar categorias --}}
     <div class="mt-10">

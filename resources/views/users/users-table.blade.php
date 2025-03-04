@@ -7,35 +7,18 @@
                 {{ session('success')}}
             </div>
         @endif
-
-        {{-- TABLA PRECIOS --}}
-        <div class="overflox-x-auto">
-            <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Id</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Nombre</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Apellido</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Email</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Rol</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Creado en</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($users as $user)
-                        <tr class="border-b hover:bg-gray-100">
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$user->id}}</td>
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$user->name}}</td>
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$user->last_name}}</td>
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$user->email}}</td>
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$user->role}}</td>
-                            <td class="py-3 px-5 text-sm text-gray-600">
-                            {{$user->created_at ? $user->created_at->format('d/m/Y H:i') : ''}}
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+        <x-reusable-table
+            :headers="['ID', 'Nombre', 'Apellido', 'Email', 'Rol', 'Creado en']"
+            :rows="$users->map(function($user){
+                return [
+                    $user->id,
+                    $user->name,
+                    $user->last_name,
+                    $user->email,
+                    $user->role,
+                    $user->created_at ? $user->created_at->format('d/m/Y H:i') : ''
+                ];
+            })"
+        />
     </div>
 </x-app-layout>

@@ -7,28 +7,16 @@
                 {{ session('success')}}
             </div>
         @endif
-
-        {{-- TABLA PRECIOS --}}
-        <div class="overflox-x-auto">
-            <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Id</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Usuario</th>
-                        <th class="py-3 px-5 text-left text-sm font-semibold text-gray-700">Precio Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($sales as $sale)
-                        <tr class="border-b hover:bg-gray-100">
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$sale->id}}</td>
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$sale->user->name}}</td>
-                            <td class="py-3 px-5 text-sm text-gray-600">{{$sale->total_price}}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+        <x-reusable-table
+            :headers="['ID', 'Usuario', 'Precio Total']"
+            :rows="$sales->map(function($sale){
+                return [
+                    $sale->id,
+                    $sale->user->name,
+                    $sale->total_price,
+                ];
+            })"
+        />
     </div>
     {{-- Formulario para agregar categorias --}}
     <div class="mt-10">
