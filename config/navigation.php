@@ -20,6 +20,10 @@ return [
         [
             'name' => 'Inventario',
             'route' => 'stocks.index'
+        ],
+        [
+            'name' => 'Detalle de ventas',
+            'route' => 'sales-details.index'
         ]
     ],
 ];

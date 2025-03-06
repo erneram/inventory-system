@@ -24,4 +24,13 @@ class StockController extends Controller
         Stock::create($data);
         return redirect()->route('stocks.index')->with('success', 'Agregado');
     }
+    public function update(Request $request, $id)
+    {
+        $data = $request->validate([
+            'quantity' => 'required|integer|min:0'
+        ]);
+        $stock = Stock::findOrFail($id);
+        $stock->update($data);
+        // return redirect()->route('stocks.index')->with('success', 'Actualizado');
+    }
 }
