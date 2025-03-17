@@ -7,51 +7,40 @@
                 {{ session('success')}}
             </div>
         @endif
-        <x-reusable-table :headers="['Id', 'Nombre', 'Descripción', 'Categoría']" :rows="$products->map(function ($product) {
-        return [
-            $product->id,
-            $product->name,
-            $product->description,
-            $product->category->name
-        ];
-    })->toArray()" />
+        <x-reusable-table :columns="[
+        ['field' => 'id', 'name' => 'Id', 'hasAction' => false],
+        ['field' => 'name', 'name' => 'Nombre', 'hasAction' => false],
+        ['field' => 'description', 'name' => 'Descripción', 'hasAction' => false],
+        ['field' => 'category', 'name' => 'Categoría', 'hasAction' => false],
+        ]" :rows="$products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'description' => $product->description,
+                'category' => $product->category->name
+            ];
+        })->toArray()">
+            <x-slot name="rowActions">
+                <div class="flex flex-row justify-between">
+                    <span x-data @click="$dispatch('open-modal', { modalId: 'createCategoryModal', category: row })"
+                        class="cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6 text-blue-500">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487z" />
+                        </svg>
+                    </span>
+                    <span x-data @click="$dispatch('open-modal', { modalId: 'deleteCategoryModal', category: row })"
+                        class="cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6 text-red-500">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                    </span>
+                </div>
+            </x-slot>
+        </x-reusable-table>
     </div>
-    {{-- Formulario para agregar categorias --}}
-    <div class="container mt-10 mx-auto py-8  rounded-md">
-        <h2 class=" text-xl text-white font-bold mb-4">Agregar nuevo producto</h2>
-        <form action="{{ route('products.store') }}" method="POST" class="bg-white p-6 rounded shadow-md">
-            @csrf
-            <div class="grid grid-cols-2 gap-2">
-                <div class="col-span-2">
-                    <label for="name" class="block text-gray-700">Nombre</label>
-                    <input type="text" name="name" id="name" required class="w-full border px-3 py-2 rounded">
-                </div>
-                <div class="col-span-2 ">
-                    <label for="description" class="block text-gray-700">Descripción</label>
-                    <textarea name="description" id="description" class="w-full border px-3 py-2 rounded"></textarea>
-                </div>
-                <div class="">
-                    <label for="cost_price" class="block text-gray-700">Precio</label>
-                    <input type="number" name="cost_price" id="cost_price" required
-                        class="w-full border px-3 py-2 rounded">
-                </div>
-                <div class="">
-                    <label for="stock_quantity" class="block text-gray-700">Cantidad en almacen</label>
-                    <input type="number" name="stock_quantity" id="stock_quantity" required
-                        class="w-full border px-3 py-2 rounded">
-                </div>
-                <div class="">
-                    <label for="category_id" class="block text-gray-700">Categorias</label>
-                    <select name="categories_id" id="category_id">
-                        @foreach ($categories as $category)
-                            <option value="{{$category->id}}">{{$category->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <button type="submit"
-                    class="col-span-2 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Añadir
-                    Producto</button>
-            </div>
-        </form>
-    </div>
+
 </x-app-layout>

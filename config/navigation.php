@@ -14,12 +14,16 @@ return [
             'route' => 'products.index',
         ],
         [
-            'name' => 'Movimientos de Inventario',
+            'name' => 'Movimientos de inventario',
             'route' => 'inventory-movements.index'
         ],
         [
             'name' => 'Inventario',
             'route' => 'stocks.index'
+        ],
+        [
+            'name' => 'Ventas',
+            'route' => 'sales.index'
         ],
         [
             'name' => 'Detalle de ventas',

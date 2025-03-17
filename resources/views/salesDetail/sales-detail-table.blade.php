@@ -11,17 +11,17 @@
         <x-reusable-table
             :headers="['ID', 'Venta Id', 'Producto', 'Cantidad', 'Precio por unidad']"
             :rows="$salesDetails->map(function ($detail) {
-        return [
-            $detail->id,
-            $detail->sale_id,
-            $detail->product->name,
-            $detail->quantity,
-            $detail->unit_price,
-        ];
-    })->toArray()"
-            />
+            return [
+                $detail->id,
+                $detail->sale_id,
+                $detail->product->name,
+                $detail->quantity,
+                $detail->unit_price,
+            ];
+             })->toArray()"
+        />
     </div>
-    {{-- Formulario para agregar categorias --}}
+
     <div class="container mx-auto py-8 mt-10">
         <h2 class="text-xl text-white font-bold mb-4">Nueva venta</h2>
         <form action="{{ route('sales-details.store') }}" method="POST" class="bg-white p-6 rounded shadow-md">

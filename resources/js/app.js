@@ -1,4 +1,5 @@
 import './bootstrap';
+import './categories/categories-store.js'
 
 import Alpine from 'alpinejs';
 
