@@ -43,7 +43,7 @@
         </x-reusable-table>
 
         <div class="flex justify-center mt-4">
-            <x-reusable-button x-data @click="$dispatch('open-modal', { modalId: 'createCategoryModal' })"
+            <x-reusable-button x-data @click="$dispatch('open-modal', { modalId: 'createCategoryModal'})"
                 btnText="Agregar Categoría" />
         </div>
 
