@@ -18,7 +18,7 @@
             ->map(function ($movement) {
                 return [
                     'id' => $movement->id,
-                    'name' => $movement->product->name,
+                    'products' => $movement->product->name,
                     'user' => $movement->user->name,
                     'type' => $movement->movement_type,
                     'quantity' => $movement->quantity,
@@ -27,7 +27,8 @@
             ->toArray()">
             <x-slot name="rowActions">
                 <div class="flex flex-row justify-between">
-                    <span x-data @click="$dispatch('open-modal', { modalId: 'createCategoryModal', category: row })"
+                    <span x-data
+                        @click="$dispatch('open-modal', { modalId: 'createInventoryMovementModal', movement: row })"
                         class="cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6 text-blue-500">
@@ -35,7 +36,8 @@
                                 d="m16.862 4.487 1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487z" />
                         </svg>
                     </span>
-                    <span x-data @click="$dispatch('open-modal', { modalId: 'deleteCategoryModal', category: row })"
+                    <span x-data
+                        @click="$dispatch('open-modal', { modalId: 'deleteInventoryMovementModal', movement: row })"
                         class="cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6 text-red-500">
@@ -47,7 +49,13 @@
             </x-slot>
         </x-reusable-table>
 
-        <x-inventory-movement.create-inventory-movement-modal :modalId="createInventoryMovementModal" />
-        <x-inventory-movement.delete-inventory-movement-modal :modalId="deleteInventoryMovementModal" />
+        <div class="flex justify-center mt-4">
+            <x-reusable-button x-data @click="$dispatch('open-modal', { modalId: 'createInventoryMovementModal'})"
+                btnText="Agregar Categoría" />
+        </div>
+
+        <x-inventory-movement.create-inventory-movement-modal modalId="createInventoryMovementModal" :products="$products"
+            :users="$users" />
+        <x-inventory-movement.delete-inventory-movement-modal modalId="deleteInventoryMovementModal" />
     </div>
 </x-app-layout>

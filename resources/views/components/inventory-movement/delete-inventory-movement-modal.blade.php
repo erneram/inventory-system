@@ -14,11 +14,13 @@
                     <!-- Close Icon -->
                 </button>
             </div>
-            <form :action="`/categories/${id}`" method="POST" class="mt-4 w-full">
+            <form :action="`/inventory-movements/${id}`" method="POST" class="mt-4 w-full">
                 @csrf
                 @method('DELETE')
                 <p class="mb-4">
-                    ¿Seguro que deseas eliminar la categoría: <strong x-text="name"></strong>?
+                    ¿Seguro que deseas eliminar el movimiento del producto: <strong x-text="product_name"></strong>,
+                    con:
+                    <strong x-text="quantity"></strong> en stock?
                 </p>
                 <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 w-full"
                     x-text="'Confirmar'"></button>
@@ -32,14 +34,17 @@
         return {
             open: false,
             id: '',
-            name: '',
+            product_name: '',
+            quantity: '',
             deleteCategoryModalTitle: 'Eliminar Categoría',
             handleOpenModal(detail) {
+                console.log(detail)
                 if (detail.modalId === modalId) {
                     this.open = true;
                     this.deleteCategoryModalTitle = 'Eliminar Categoría';
-                    this.id = detail.category.id;
-                    this.name = detail.category.name;
+                    this.id = detail.movement.id;
+                    this.product_name = detail.movement.products;
+                    this.quantity = detail.movement.quantity;
                 }
             }
         };
