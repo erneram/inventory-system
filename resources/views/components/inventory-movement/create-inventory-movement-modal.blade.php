@@ -1,7 +1,7 @@
 @props([
-    'modalId' => 'createCategoryModal',
+    'modalId' => 'createInventoryMovementModal',
 ])
-<div x-data="createCategoryModalData('{{ $modalId }}')" x-on:open-modal.window="handleOpenModal($event.detail)" x-on:close-modal="open = false"
+<div x-data="createInventoryMovementModalData('{{ $modalId }}')" x-on:open-modal.window="handleOpenModal($event.detail)" x-on:close-modal="open = false"
     x-cloak>
     <div x-show="open" x-cloak class="fixed inset-0 z-50 flex items-center justify-center">
         <div class="absolute inset-0 bg-black opacity-50"
@@ -37,7 +37,7 @@
 </div>
 
 <script>
-    function createCategoryModalData(modalId) {
+    function createInventoryMovementModalData(modalId) {
         return {
             open: false,
             isEdit: false,

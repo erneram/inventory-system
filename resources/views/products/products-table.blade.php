@@ -3,26 +3,30 @@
         <h1 class="text-2xl text-white font-bold mb-6">Productos</h1>
 
         @if (session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                {{ session('success')}}
+            <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 5000)" x-show="show"
+                class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+                {{ session('success') }}
             </div>
         @endif
+
         <x-reusable-table :columns="[
-        ['field' => 'id', 'name' => 'Id', 'hasAction' => false],
-        ['field' => 'name', 'name' => 'Nombre', 'hasAction' => false],
-        ['field' => 'description', 'name' => 'Descripción', 'hasAction' => false],
-        ['field' => 'category', 'name' => 'Categoría', 'hasAction' => false],
-        ]" :rows="$products->map(function ($product) {
-            return [
-                'id' => $product->id,
-                'name' => $product->name,
-                'description' => $product->description,
-                'category' => $product->category->name
-            ];
-        })->toArray()">
+            ['field' => 'id', 'name' => 'Id', 'hasAction' => false],
+            ['field' => 'name', 'name' => 'Nombre', 'hasAction' => false],
+            ['field' => 'description', 'name' => 'Descripción', 'hasAction' => false],
+            ['field' => 'category', 'name' => 'Categoría', 'hasAction' => false],
+        ]" :rows="$products
+            ->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'description' => $product->description,
+                    'category' => $product->category->name,
+                ];
+            })
+            ->toArray()">
             <x-slot name="rowActions">
                 <div class="flex flex-row justify-between">
-                    <span x-data @click="$dispatch('open-modal', { modalId: 'createCategoryModal', category: row })"
+                    <span x-data @click="$dispatch('open-modal', { modalId: 'createProductModal', product: row })"
                         class="cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6 text-blue-500">
@@ -30,7 +34,7 @@
                                 d="m16.862 4.487 1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487z" />
                         </svg>
                     </span>
-                    <span x-data @click="$dispatch('open-modal', { modalId: 'deleteCategoryModal', category: row })"
+                    <span x-data @click="$dispatch('open-modal', { modalId: 'deleteProductModal', product: row })"
                         class="cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6 text-red-500">
@@ -41,6 +45,14 @@
                 </div>
             </x-slot>
         </x-reusable-table>
-    </div>
 
+        <div class="flex justify-center mt-4">
+            <x-reusable-button x-data @click="$dispatch('open-modal', { modalId: 'createProductModal'})"
+                btnText="Agregar Producto" />
+        </div>
+
+        <x-products.create-product-modal modalId="createProductModal" :categories="$categories" :prices="$prices"
+            :stocks="$stocks" />
+        <x-products.delete-product-modal modalId="deleteProductModal" />
+    </div>
 </x-app-layout>
