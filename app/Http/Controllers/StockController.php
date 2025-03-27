@@ -26,11 +26,22 @@ class StockController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $data = $request->validate([
-            'quantity' => 'required|integer|min:0'
-        ]);
+        try {
+
+            $data = $request->validate([
+                'quantity' => 'required|integer|min:0'
+            ]);
+            $stock = Stock::findOrFail($id);
+            $stock->update($data);
+            return redirect()->route('stocks.index')->with('success', 'Stock Actualizado correctamente');
+        } catch (\Exception $e) {
+            return redirect()->route('stocks.index')->with('error', 'No se ha podido actualizar');
+        }
+    }
+    public function delete($id)
+    {
         $stock = Stock::findOrFail($id);
-        $stock->update($data);
-        // return redirect()->route('stocks.index')->with('success', 'Actualizado');
+        $stock->delete();
+        return redirect()->route('stocks.index')->with('success', 'Eliminado correctamente');
     }
 }

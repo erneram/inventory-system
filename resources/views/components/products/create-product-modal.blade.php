@@ -51,7 +51,7 @@
                     </div>
                     <button type="submit"
                         class="col-span-2 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 w-full"
-                        x-text="isEdit ? 'Actualizar Produto' : 'Agregar Producto'"></button>
+                        x-text="isEdit ? 'Actualizar produto' : 'Agregar producto'"></button>
                 </div>
             </form>
         </div>
