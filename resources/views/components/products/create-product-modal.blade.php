@@ -77,7 +77,7 @@
                     this.open = true;
                     if (detail.product) {
                         this.isEdit = true;
-                        this.createEditProductTitle = 'Editar Producto'
+                        this.createEditProductTitle = 'Editar producto';
                         this.product = detail.product;
                         this.name = detail.product.name;
                         this.description = detail.product.description;
@@ -90,7 +90,7 @@
                         console.log(this.stocks);
                     } else {
                         this.isEdit = false;
-                        this.createEditProductTitle = 'Añadir Nuevo Producto'
+                        this.createEditProductTitle = 'Añadir nuevo producto';
                         this.product = null;
                         this.name = '';
                         this.description = '';

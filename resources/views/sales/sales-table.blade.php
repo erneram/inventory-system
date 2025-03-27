@@ -4,40 +4,48 @@
 
         @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                {{ session('success')}}
+                {{ session('success') }}
             </div>
         @endif
-        <x-reusable-table
-            :headers="['ID', 'Usuario', 'Precio Total']"
-            :rows="$sales->map(function($sale){
-                return [
-                    $sale->id,
-                    $sale->user->name,
-                    $sale->total_price,
-                ];
-            })"
-        />
-    </div>
-    {{-- Formulario para agregar categorias --}}
-    <div class="mt-10">
-        <h2 class="text-xl text-white font-bold mb-4">Agregar Nueva Venta</h2>
-        <form action="{{ route('sales.store') }}" method="POST" class="bg-white p-6 rounded shadow-md">
-            @csrf
-            <div class="mb-4">
-                <label for="total_price" class="block text-gray-700">Precio total</label>
-                <input type="number" name="total_price" id="total_price" required
-                    class="w-full border px-3 py-2 rounded">
-            </div>
-            <div class="mb-4">
-                <label for="user_id" class="block text-gray-700">Usuarios</label>
-                <select name="user_id" id="user_id">
-                    @foreach ($users as $user)
-                        <option value="{{$user->id}}">{{$user->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Añadir
-                Nueva Venta</button>
-        </form>
+        <x-reusable-table :columns="[
+            ['field' => 'id', 'name' => 'ID', 'hasAction' => false],
+            ['field' => 'user', 'name' => 'Usuario', 'hasAction' => false],
+            ['field' => 'price', 'name' => 'Precio Total', 'hasAction' => false],
+        ]" :rows="$sales->map(function ($sale) {
+            return [
+                'id' => $sale->id,
+                'user' => $sale->user->name,
+                'price' => $sale->total_price,
+            ];
+        })">
+            <x-slot name="rowActions">
+                <div class="flex flex-row justify-between">
+                    <span x-data @click="$dispatch('open-modal', { modalId: 'createSaleModal', sales: row })"
+                        class="cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6 text-blue-500">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487z" />
+                        </svg>
+                    </span>
+                    <span x-data @click="$dispatch('open-modal', { modalId: 'deleteSaleModal', sales: row })"
+                        class="cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6 text-red-500">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                    </span>
+                </div>
+            </x-slot>
+
+        </x-reusable-table>
+        <div class="flex justify-center mt-4">
+            <x-reusable-button x-data @click="$dispatch('open-modal', { modalId: 'createSaleModal'})"
+                btnText="Agregar nueva venta" />
+        </div>
+        <x-sales.create-sale-modal modalId="createSaleModal" :users="$users" />
+        <x-sales.delete-sale-modal modalId="deleteSaleModal" />
+
     </div>
 </x-app-layout>
