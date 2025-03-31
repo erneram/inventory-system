@@ -44,9 +44,9 @@ class ProductController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-            'categories_id' => 'required|integer',
-            'stock_quantity' => 'required|integer|min:0',
-            'cost_price' => 'required|numeric|min:0',
+            'categories_id' => 'required|integer|min:1',
+            'stock_quantity' => 'required|integer|min:1',
+            'cost_price' => 'required|numeric|min:1',
         ]);
         $iva = 0.12;
         try {
@@ -85,9 +85,9 @@ class ProductController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-            'categories_id' => 'required|integer',
-            'stock_quantity' => 'required|integer|min:0',
-            'cost_price' => 'required|numeric|min:0',
+            'categories_id' => 'required|integer|min:1',
+            'stock_quantity' => 'required|integer|min:1',
+            'cost_price' => 'required|numeric|min:1',
         ]);
         $iva = 0.12;
         try {

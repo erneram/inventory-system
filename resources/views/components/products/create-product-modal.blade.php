@@ -33,7 +33,7 @@
                     </div>
                     <div class="">
                         <label for="cost_price" class="block text-gray-700">Precio</label>
-                        <input type="number" name="cost_price" x-model="cost_price" required
+                        <input type="numeric" name="cost_price" x-model="cost_price" required
                             class="w-full border px-3 py-2 rounded">
                     </div>
                     <div class="">

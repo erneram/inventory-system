@@ -22,7 +22,7 @@
                 <div class="grid grid-cols-2 gap-2">
                     <div class="mb-4 col-span-2">
                         <label for="total_price" class="block text-gray-700">Precio total</label>
-                        <input type="integer" name="total_price" x-model="total_price" required
+                        <input type="numeric" name="total_price" x-model="total_price" required
                             class="w-full border px-3 py-2 rounded">
                     </div>
                     <div class="mb-4 col-span-2">

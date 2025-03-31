@@ -25,9 +25,9 @@ class SalesDetailController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'product_id' => 'required|integer',
-            'quantity' => 'required|integer',
-            'user_id' => 'required|integer'
+            'product_id' => 'required|integer|min:1',
+            'quantity' => 'required|integer|min:1',
+            'user_id' => 'required|integer|min:1'
         ]);
         $product_price = Price::where('product_id', $data['product_id'])->first();
         $total_price = $data['quantity'] * $product_price->selling_price;
@@ -58,6 +58,24 @@ class SalesDetailController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
         return redirect()->route('sales-details.index')->with('success', 'Agregado');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = $request->validate([
+            'sales_id' => 'required|integer|min:1',
+            'product_id' => 'required|integer|min:1',
+            'quantity' => 'required|integer|min:1',
+            'unit_price' => 'required|numeric|min:1',
+        ]);
+        $salesDetail = SalesDetail::findOrFail($id);
+        $salesDetail->update($data);
+        return redirect()->route('sales-details.index')->with('success', 'Detalle de venta actualizado correctamente');
+    }
+    public function delete($id)
+    {
+        SalesDetail::findOrFail($id)->delete();
+        return redirect()->route('sales-details.index')->with('success', 'Eliminado Correctamente');
     }
 }
 

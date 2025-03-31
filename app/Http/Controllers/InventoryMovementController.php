@@ -20,10 +20,10 @@ class InventoryMovementController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'product_id' => 'required|integer',
-            'user_id' => 'required|integer',
+            'product_id' => 'required|integer|min:1',
+            'user_id' => 'required|integer|min:1',
             'movement_type' => 'required|string|max:50',
-            'quantity' => 'required|integer|min:0',
+            'quantity' => 'required|integer|min:1',
         ]);
         try {
             InventoryMovement::create($data);
@@ -36,10 +36,10 @@ class InventoryMovementController extends Controller
     public function update(Request $request, $movementId)
     {
         $data = $request->validate([
-            'product_id' => 'required|integer',
-            'user_id' => 'required|integer',
+            'product_id' => 'required|integer|min:1',
+            'user_id' => 'required|integer|min:1',
             'movement_type' => 'required|string|max:50',
-            'quantity' => 'required|integer|min:0',
+            'quantity' => 'required|integer|min:1',
         ]);
         try {
             $movement = InventoryMovement::findOrFail($movementId);

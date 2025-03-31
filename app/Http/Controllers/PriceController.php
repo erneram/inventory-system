@@ -18,9 +18,9 @@ class PriceController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'product_id' => 'required|integer',
-            'cost_price' => 'required|integer',
-            'selling_price' => 'required|integer',
+            'product_id' => 'required|integer|min:1',
+            'cost_price' => 'required|numeric|min:1',
+            'selling_price' => 'required|numeric|min:1',
         ]);
         Price::create($data);
         return redirect()->route('prices.index')->with('success', 'Agregado');

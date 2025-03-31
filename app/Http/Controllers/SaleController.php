@@ -17,8 +17,8 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'user_id' => 'required|integer',
-            'total_price' => 'required|integer',
+            'user_id' => 'required|integer|min:1',
+            'total_price' => 'required|numeric|min:1',
         ]);
         Sale::create($data);
         return redirect()->route('sales.index')->with('success', 'Agregado');
@@ -27,12 +27,12 @@ class SaleController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->validate([
-            'user_id' => 'required|integer|min:0',
-            'total_price' => 'required|integer|min:0',
+            'user_id' => 'required|integer|min:1',
+            'total_price' => 'required|numeric|min:1',
         ]);
         $cateogry = Sale::findOrFail($id);
         $cateogry->update($data);
-
+        return redirect()->route('sales.index')->with('success', 'Venta actualizada correctamente');
     }
 
     public function delete($id)

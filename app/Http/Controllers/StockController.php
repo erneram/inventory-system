@@ -18,8 +18,8 @@ class StockController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'product_id' => 'required|integer',
-            'quantity' => 'required|integer'
+            'product_id' => 'required|integer|min:1',
+            'quantity' => 'required|integer|min:1'
         ]);
         Stock::create($data);
         return redirect()->route('stocks.index')->with('success', 'Agregado');
@@ -27,9 +27,8 @@ class StockController extends Controller
     public function update(Request $request, $id)
     {
         try {
-
             $data = $request->validate([
-                'quantity' => 'required|integer|min:0'
+                'quantity' => 'required|integer|min:1'
             ]);
             $stock = Stock::findOrFail($id);
             $stock->update($data);
