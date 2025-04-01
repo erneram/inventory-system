@@ -14,7 +14,7 @@
                     <!-- Close Icon -->
                 </button>
             </div>
-            <form :action="`/categories/${id}`" method="POST" class="mt-4 w-full">
+            <form :action="`/products/${id}`" method="POST" class="mt-4 w-full">
                 @csrf
                 @method('DELETE')
                 <p class="mb-4">

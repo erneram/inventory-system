@@ -25,4 +25,17 @@ class PriceController extends Controller
         Price::create($data);
         return redirect()->route('prices.index')->with('success', 'Agregado');
     }
+    public function update(Request $request, $id)
+    {
+        $data = $request->validate([
+            'cost_price' => 'required|numeric|min:1',
+            'selling_price' => 'required|numeric|min:1',
+        ]);
+        try {
+            Price::findOrFail($id)->update($data);
+            return redirect()->route('prices.index')->with('success', 'Agregado');
+        } catch (\Exception $e) {
+            return redirect()->route('prices.index')->with('error', 'No se modificaron los precios');
+        }
+    }
 }

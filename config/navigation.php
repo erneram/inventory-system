@@ -14,6 +14,10 @@ return [
             'route' => 'products.index',
         ],
         [
+            'name' => 'Precios',
+            'route' => 'prices.index',
+        ],
+        [
             'name' => 'Movimientos de inventario',
             'route' => 'inventory-movements.index'
         ],

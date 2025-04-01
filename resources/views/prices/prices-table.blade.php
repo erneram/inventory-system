@@ -4,44 +4,40 @@
 
         @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                {{ session('success')}}
+                {{ session('success') }}
             </div>
         @endif
-        <x-reusable-table
-            :headers="['ID', 'Producto', 'Precio', 'Precio Venta']"
-            :rows="$prices->map(function($price) {
+        <x-reusable-table :columns="[
+            ['field' => 'id', 'name' => 'ID', 'hasAction' => false],
+            ['field' => 'product', 'name' => 'Producto', 'hasAction' => false],
+            ['field' => 'price', 'name' => 'Precio', 'hasAction' => false],
+            ['field' => 'sell_price', 'name' => 'Precio Venta', 'hasAction' => false],
+        ]" :rows="$prices
+            ->map(function ($price) {
                 return [
-                    $price->id,
-                    $price->product->name,
-                    $price->cost_price,
-                    $price->selling_price
+                    'id' => $price->id,
+                    'product' => $price->product->name,
+                    'price' => $price->cost_price,
+                    'sell_price' => $price->selling_price,
                 ];
-            })->toArray()"
-        />
+            })
+            ->toArray()">
+
+            <x-slot name="rowActions">
+                <div class="flex flex-row justify-between">
+                    <span x-data @click="$dispatch('open-modal', { modalId: 'createPriceModal', price: row })"
+                        class="cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6 text-blue-500">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487z" />
+                        </svg>
+                    </span>
+                </div>
+            </x-slot>
+        </x-reusable-table>
+
+        <x-prices.create-prices-modal modalId="createPriceModal" :products="$products" />
     </div>
-    {{-- Formulario para agregar categorias --}}
-    <div class="mt-10">
-        <h2 class="text-xl text-white font-bold mb-4">Agregar Nueva Categoría</h2>
-        <form action="{{ route('prices.store') }}" method="POST" class="bg-white p-6 rounded shadow-md">
-            @csrf
-            <div class="mb-4">
-                <label for="cost_price" class="block text-gray-700">Precio del producto</label>
-                <input type="number" name="cost_price" id="selling_price" required class="w-full border px-3 py-2 rounded">
-            </div>
-            <div class="mb-4">
-                <label for="selling_price" class="block text-gray-700">Precio de venta</label>
-                <input type="number" name="selling_price" id="selling_price" required class="w-full border px-3 py-2 rounded">
-            </div>
-            <div class="mb-4">
-                <label for="product_id" class="block text-gray-700">Categorias</label>
-                <select name="product_id" id="product_id">
-                    @foreach ($products as $product)
-                        <option value="{{$product->id}}">{{$product->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Añadir
-                Producto</button>
-        </form>
-    </div>
+
 </x-app-layout>
