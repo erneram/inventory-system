@@ -44,7 +44,8 @@
             <x-reusable-button x-data @click="$dispatch('open-modal', { modalId: 'createSaleModal'})"
                 btnText="Agregar nueva venta" />
         </div>
-        <x-sales.create-sale-modal modalId="createSaleModal" :users="$users" />
+        <x-sales.create-sale-modal modalId="createSaleModal" :users="$users" :products="$products" :prices="$prices"
+            :currentUserId="$currentUserId" :salesDetails="$salesDetails" />
         <x-sales.delete-sale-modal modalId="deleteSaleModal" />
 
     </div>

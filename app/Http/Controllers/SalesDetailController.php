@@ -22,20 +22,20 @@ class SalesDetailController extends Controller
         return view('salesDetail.sales-detail-table', compact('salesDetails', 'products', 'users'));
     }
 
+    // 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'product_id' => 'required|integer|min:1',
-            'quantity' => 'required|integer|min:1',
-            'user_id' => 'required|integer|min:1'
-        ]);
-        $product_price = Price::where('product_id', $data['product_id'])->first();
-        $total_price = $data['quantity'] * $product_price->selling_price;
         try {
-            DB::transaction(function () use ($data, $total_price, $product_price) {
+            $data = $request->validate([
+                'product_id' => 'required|integer|min:1',
+                'quantity' => 'required|integer|min:1',
+                'user_id' => 'required|integer|min:1'
+            ]);
+            DB::transaction(function () use ($data) {
+                $product_price = Price::where('product_id', $data['product_id'])->first();
                 $sales = Sale::create([
                     'user_id' => $data['user_id'],
-                    'total_price' => $total_price
+                    'total_price' => $product_price * $data['quantity'],
                 ]);
                 SalesDetail::create([
                     'sales_id' => $sales->id,
@@ -49,10 +49,10 @@ class SalesDetailController extends Controller
                     'movement_type' => 'OUT',
                     'quantity' => $data['quantity'],
                 ]);
-                $stock_id = Stock::where('product_id', $data['product_id'])->first();
-                $newStock = $stock_id->quantity - $data['quantity'];
-                $stock_id->update(['quantity' => $newStock]);
-
+                $stock = Stock::where('product_id', $data['product_id'])->first();
+                $stock->update([
+                    'quantity' => $stock->quantity - $data['quantity'],
+                ]);
             });
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
