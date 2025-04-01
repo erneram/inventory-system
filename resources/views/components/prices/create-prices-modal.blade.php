@@ -53,8 +53,6 @@
             handleOpenModal(detail) {
                 if (detail.modalId === modalId) {
                     this.open = true;
-                    console.log(detail);
-                    console.log(this.products);
                     if (detail.price) {
                         this.isEdit = true;
                         this.createPriceTitle = 'Editar precio del producto';

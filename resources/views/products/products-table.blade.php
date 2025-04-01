@@ -20,7 +20,7 @@
                     'id' => $product->id,
                     'name' => $product->name,
                     'description' => $product->description,
-                    'category' => $product->category->name,
+                    'category' => $product->category ? $product->category->name : 'Sin categoría',
                 ];
             })
             ->toArray()">

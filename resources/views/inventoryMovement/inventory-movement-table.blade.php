@@ -18,7 +18,7 @@
             ->map(function ($movement) {
                 return [
                     'id' => $movement->id,
-                    'products' => $movement->product->name,
+                    'products' => $movement->product ? $movement->product->name : 'Sin producto',
                     'user' => $movement->user->name,
                     'type' => $movement->movement_type,
                     'quantity' => $movement->quantity,

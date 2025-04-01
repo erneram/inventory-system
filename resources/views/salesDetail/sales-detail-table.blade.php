@@ -19,7 +19,7 @@
                 return [
                     'id' => $detail->id,
                     'sell_id' => $detail->sales_id,
-                    'product' => $detail->product->name,
+                    'product' => $detail->product ? $detail->product->name : 'Sin producto',
                     'quantity' => $detail->quantity,
                     'unit_price' => $detail->unit_price,
                 ];

@@ -15,7 +15,7 @@
             ->map(function ($stock) {
                 return [
                     'id' => $stock->id,
-                    'product' => $stock->product->name,
+                    'product' => $stock->product ? $stock->product : 'Sin producto',
                     'quantity' => $stock->quantity,
                 ];
             })

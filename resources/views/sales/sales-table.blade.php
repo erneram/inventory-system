@@ -14,7 +14,7 @@
         ]" :rows="$sales->map(function ($sale) {
             return [
                 'id' => $sale->id,
-                'user' => $sale->user->name,
+                'user' => $sale->user ? $sale->user->name : 'No existe usuario',
                 'price' => $sale->total_price,
             ];
         })">

@@ -16,7 +16,7 @@
             ->map(function ($price) {
                 return [
                     'id' => $price->id,
-                    'product' => $price->product->name,
+                    'product' => $price->product ? $price->product->name : 'Sin producto',
                     'price' => $price->cost_price,
                     'sell_price' => $price->selling_price,
                 ];
