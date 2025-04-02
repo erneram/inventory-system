@@ -6,10 +6,30 @@
     'actionText' => 'Action',
     'tableTextLinkLabel' => 'Link',
 ])
+
 <div x-data="{
     columns: {{ collect($columns) }},
     rows: {{ collect($rows) }},
-    isStriped: {{ collect($isStriped) }}
+    isStriped: {{ collect($isStriped) }},
+    currentPage: 1,
+    rowsPerPage: 10,
+    get paginatedRows() {
+        const start = (this.currentPage - 1) * this.rowsPerPage;
+        const end = this.currentPage * this.rowsPerPage;
+        return this.rows.slice(start, end);
+    },
+    get totalPages() {
+        return Math.ceil(this.rows.length / this.rowsPerPage);
+    },
+    goToPage(page) {
+        if (page >= 1 && page <= this.totalPages) {
+            this.currentPage = page;
+        }
+    },
+    changeRowsPerPage(event) {
+        this.rowsPerPage = parseInt(event.target.value); // Update rows per page
+        this.currentPage = 1; // Reset to the first page whenever the selection changes
+    },
 }" x-cloak class="overflow-x-auto">
 
     <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
@@ -34,7 +54,8 @@
                     @isset($tableActions)
                         <th
                             class="bg-gray-50 sticky top-0 border-b border-gray-100 px-6 py-3 text-gray-500 font-bold tracking-wider uppercase text-xs truncate">
-                            {{ $actionText }}</th>
+                            {{ $actionText }}
+                        </th>
                     @endisset
                 @endisset
             </tr>
@@ -51,8 +72,8 @@
                     </tr>
                 @endisset
             </template>
-            <template x-for="(row, rowIndex) in rows" :key="'row-' + rowIndex">
-                <tr :class="{ 'bg-gray-50    ': isStriped && ((rowIndex + 1) % 2 === 0) }">
+            <template x-for="(row, rowIndex) in paginatedRows" :key="'row-' + rowIndex">
+                <tr :class="{ 'bg-gray-50': isStriped && ((rowIndex + 1) % 2 === 0) }">
                     {{-- Custom slots for all rows customization --}}
                     @isset($tableRows)
                         {{ $tableRows }}
@@ -81,4 +102,39 @@
             </template>
         </tbody>
     </table>
+
+    <div class="flex justify-between items-center mt-4 px-4">
+        <div class="flex justify-between items-center text-white">
+            <span class="mr-2">Mostrar</span>
+            <select x-on:change="changeRowsPerPage" x-bind:value="rowsPerPage"
+                class="border border-gray-300 rounded p-2 text-md text-black w-24"> <!-- Limited width -->
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
+            <span class="ml-2 ">items</span>
+        </div>
+
+        <div class="flex items-center">
+            <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1"
+                class="bg-gray-200 text-gray-700 px-4 py-2 rounded disabled:opacity-50">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+            </button>
+            <div class="text-center text-white px-2">
+                <span x-text="currentPage"></span> de <span x-text="totalPages"></span>
+            </div>
+            <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages"
+                class="bg-gray-200 text-gray-700 px-4 py-2 rounded disabled:opacity-50">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
 </div>
